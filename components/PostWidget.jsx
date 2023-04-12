@@ -7,6 +7,7 @@ import { getRecentPosts, getSimilarPosts } from "@/services";
 const PostWidget = ({ categories, slug }) => {
   const [relatedPosts, setRelatedPosts] = useState([]);
 
+  // client side fetching
   useEffect(() => {
     if (slug)
       getSimilarPosts(categories, slug).then((result) =>
@@ -37,7 +38,11 @@ const PostWidget = ({ categories, slug }) => {
             <p className="text-gray-500 font-xs">
               {moment(post.createdAt).format("MMM DD, YYYY")}
             </p>
-            <Link href={`/post/${post.slug}`} className="text-md" key={index}>
+            <Link
+              href={`/post/${post.slug}`}
+              className="text-md"
+              key={post.title}
+            >
               {post.title}
             </Link>
           </div>

@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import Link from "next/link";
+import useAsyncEffect from "@/hooks/useAsyncEffect";
 
 import { getRecentPosts, getSimilarPosts } from "@/services";
 
 const PostWidget = ({ categories, slug }) => {
   const [relatedPosts, setRelatedPosts] = useState([]);
 
-  // client side fetching
-  useEffect(() => {
-    if (slug)
-      getSimilarPosts(categories, slug).then((result) =>
-        setRelatedPosts(result)
-      );
-    else {
-      getRecentPosts().then((result) => setRelatedPosts(result));
+  // client side fetching, use async in custom hooks
+  useAsyncEffect(async () => {
+    if (slug) {
+      const result = await getSimilarPosts(categories, slug);
+      setRelatedPosts(result);
+    } else {
+      const result = await getRecentPosts();
+      setRelatedPosts(result);
     }
   }, [slug]);
 
